@@ -34,8 +34,7 @@ public class MemberController {
 
         }
 
-        Member saved = memberRepository.save(member);
-        Member byId = memberRepository.findById(saved.getId());
+        Member byId = memberRepository.findById(memberRepository.save(member).getId());
         log.info("member={}", byId);
 
         return "redirect:/";

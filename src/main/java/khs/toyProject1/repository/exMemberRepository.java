@@ -25,12 +25,15 @@ public class exMemberRepository implements MemberRepository{
     }
 
     @Override
-    public void update(String name, Long id) {
-
+    public void update(Long id, String name, Integer age, String password) {
+        Member updateMember = repository.get(id);
+        updateMember.setName(name);
+        updateMember.setAge(age);
+        updateMember.setPassword(password);
     }
 
     @Override
     public void delete(Long memberId) {
-
+        repository.remove(memberId);
     }
 }

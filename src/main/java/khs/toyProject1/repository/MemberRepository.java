@@ -8,7 +8,7 @@ public interface MemberRepository {
 
     Member findById(Long id);
 
-    void update(String name, Long id);
+    void update(Long id, String name, Integer age, String password);
 
     void delete(Long memberId);
 }

@@ -21,7 +21,34 @@ public class memoryMemberRepositoryTest {
         member.setName("test1");
         member.setPassword("1234");
         Member saved = memberRepository.save(member);
-        log.info("member={}",memberRepository.findById(saved.getId()));
+        log.info("save member={}",memberRepository.findById(saved.getId()));
+
+    }
+
+    @Test
+    void update() {
+        Member member = new Member();
+        member.setAge(20);
+        member.setName("test2");
+        member.setPassword("1234");
+        Member saved = memberRepository.save(member);
+        log.info("before member={}",memberRepository.findById(saved.getId()));
+
+        memberRepository.update(saved.getId(), "test3", 27, "4321");
+        log.info("after member={}",memberRepository.findById(saved.getId()));
+
+    }
+
+    @Test
+    void remove() {
+        Member member = new Member();
+        member.setAge(20);
+        member.setName("test4");
+        member.setPassword("1234");
+        Member saved = memberRepository.save(member);
+        log.info("exist member={}",memberRepository.findById(saved.getId()));
+        memberRepository.delete(saved.getId());
+
 
     }
 }
