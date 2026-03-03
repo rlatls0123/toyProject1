@@ -1,7 +1,6 @@
 package khs.toyProject1.repository;
 
 import khs.toyProject1.member.Member;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.HashMap;
 //@RequiredArgsConstructor
 public class exMemberRepository implements MemberRepository{
 
-    private static HashMap<Long, Member> repository = new HashMap<>();
+    private final static HashMap<Long, Member> repository = new HashMap<>();
     private static Long sequence=0L;
 
     @Override
