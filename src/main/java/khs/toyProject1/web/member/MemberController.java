@@ -1,8 +1,8 @@
 package khs.toyProject1.web.member;
 
 import jakarta.validation.Valid;
-import khs.toyProject1.member.Member;
-import khs.toyProject1.repository.MemberRepository;
+import khs.toyProject1.domain.member.Member;
+import khs.toyProject1.domain.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

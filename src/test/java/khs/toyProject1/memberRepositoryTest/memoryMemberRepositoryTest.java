@@ -1,8 +1,8 @@
 package khs.toyProject1.memberRepositoryTest;
 
-import khs.toyProject1.member.Member;
-import khs.toyProject1.repository.MemberRepository;
-import khs.toyProject1.repository.exMemberRepository;
+import khs.toyProject1.domain.member.Member;
+import khs.toyProject1.domain.repository.MemberRepository;
+import khs.toyProject1.domain.repository.exMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class memoryMemberRepositoryTest {
         Member saved = memberRepository.save(member);
         log.info("before member={}",memberRepository.findById(saved.getId()));
 
-        memberRepository.update(saved.getId(), "test3", 27, "4321");
+        memberRepository.update(saved.getId(), , "test3", 27, "4321");
         log.info("after member={}",memberRepository.findById(saved.getId()));
 
     }

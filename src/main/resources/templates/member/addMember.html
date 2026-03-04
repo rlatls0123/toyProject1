@@ -11,6 +11,14 @@
 <form th:action="@{/add}" th:object="${member}" method="post">
 
   <div>
+    아이디:
+    <input type="text" th:field="*{loginId}" />
+    <div style="color:red"
+         th:if="${#fields.hasErrors('loginId')}"
+         th:errors="*{loginId}"></div>
+  </div>
+
+  <div>
     이름:
     <input type="text" th:field="*{name}" />
     <div style="color:red"
