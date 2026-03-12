@@ -1,5 +1,7 @@
 package khs.toyProject1.web.login;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.MemberRepository;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +27,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("LoginForm") LoginForm loginForm, BindingResult bindingResult, @RequestParam(defaultValue = "/") String Url) {
+    public String login(@Valid @ModelAttribute("LoginForm") LoginForm loginForm, BindingResult bindingResult,
+                        @RequestParam(defaultValue = "/") String redirectUrl,
+                        HttpServletRequest request, Model model) {
         if (bindingResult.hasErrors()) {
             return "login/Login";
         }
@@ -36,6 +41,13 @@ public class LoginController {
         if (loginMember == null) {
             return "login/Login";
         }
-        return "redirect:" + Url;
+
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", loginMember);
+//        model.addAttribute("member", loginMember);
+//        log.info("loginMember={}",loginMember);
+
+
+        return "redirect:" + redirectUrl;
     }
 }

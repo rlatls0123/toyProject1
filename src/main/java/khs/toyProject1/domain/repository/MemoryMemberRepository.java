@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 //@RequiredArgsConstructor
-public class exMemberRepository implements MemberRepository{
+public class MemoryMemberRepository implements MemberRepository{
 
     private final static HashMap<Long, Member> repository = new HashMap<>();
     private static Long sequence=0L;

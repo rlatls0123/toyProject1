@@ -2,7 +2,7 @@ package khs.toyProject1.memberRepositoryTest;
 
 import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.MemberRepository;
-import khs.toyProject1.domain.repository.exMemberRepository;
+import khs.toyProject1.domain.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class memoryMemberRepositoryTest {
 
     private static final Logger log = LoggerFactory.getLogger(memoryMemberRepositoryTest.class);
-    MemberRepository memberRepository = new exMemberRepository();
+    MemberRepository memberRepository = new MemoryMemberRepository();
 
 
     @Test
