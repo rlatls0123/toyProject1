@@ -34,6 +34,8 @@ public class MemberController {
 
         }
 
+
+
         Member byId = memberRepository.findById(memberRepository.save(member).getId());
         log.info("member={}", byId);
 

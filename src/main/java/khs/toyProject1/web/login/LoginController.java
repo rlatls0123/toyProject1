@@ -47,4 +47,14 @@ public class LoginController {
 
         return "redirect:" + redirectUrl;
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 모든 세션 속성을 삭제하고 기존 세션을 무효화(invalidate) 한다.
+        }
+
+        return "redirect:/";
+    }
 }
