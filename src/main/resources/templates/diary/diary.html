@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="board-container">
+  <h1>게시판</h1>
+  <button class="my-button" th:onclick="|location.href='@{/diary/write}'|" type="button">글쓰기</button>
+
+  <table class="board-table">
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>제목</th>
+      <th>작성자</th>
+      <th>작성일</th>
+      <th>조회수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td><a href="#">게시글 제목</a></td>
+      <td>홍길동</td>
+      <td>2023-03-21</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="#">두 번째 게시글</a></td>
+      <td>김철수</td>
+      <td>2023-03-20</td>
+      <td>50</td>
+    </tr>
+    <!-- 더 많은 게시글 추가 -->
+    </tbody>
+  </table>
+  <div class="pagination">
+    <a href="#">이전</a>
+    <a href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#">다음</a>
+  </div>
+</div>
+</body>
+</html>

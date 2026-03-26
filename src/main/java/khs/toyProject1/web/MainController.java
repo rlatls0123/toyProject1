@@ -26,4 +26,9 @@ public class MainController {
         model.addAttribute("member", loginMember);
         return "loginHome";
     }
+
+    @GetMapping("/diary")
+    public String diary() {
+        return "diary/diary";
+    }
 }
