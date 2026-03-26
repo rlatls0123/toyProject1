@@ -27,7 +27,7 @@ public class MainController {
         return "loginHome";
     }
 
-    @GetMapping("/diary")
+//    @GetMapping("/diary")
     public String diary() {
         return "diary/diary";
     }

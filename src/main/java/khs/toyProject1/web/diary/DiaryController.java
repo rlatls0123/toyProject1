@@ -17,15 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
-@RequestMapping("/diary")
+@RequestMapping("/diaries")
 @RequiredArgsConstructor
 @Slf4j
 public class DiaryController {
 
     private final DiaryMemoryRepository dmRepository;
 
+    @GetMapping
+    public String diaries(Model model) {
+        List<Diary> diaryList = dmRepository.findAll();
+        model.addAttribute("diaryList", diaryList);
+        return "/diary/diaries";
+    }
 
     @GetMapping("/write")
     public String writeForm(Model model, HttpServletRequest request) {
@@ -53,7 +60,7 @@ public class DiaryController {
         dmRepository.save(diary);
         log.info("diary={}",diary);
 
-        return "redirect:/diary";
+        return "redirect:/diaries";
     }
 
 //        @PostMapping("/write")

@@ -23,5 +23,13 @@ public class DiaryMemoryRepository {
         return diary;
     }
 
+    public Diary findById(Long id) {
+        return diaryMap.get(id);
+    }
+
+    public List<Diary> findAll() {
+        return new ArrayList<>(diaryMap.values());
+    }
+
 
 }

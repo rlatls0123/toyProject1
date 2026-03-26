@@ -14,5 +14,9 @@ public class Diary {
     public Diary() {
     }
 
-
+    public Diary(String title, String content, LocalDateTime localDateTime) {
+        this.title = title;
+        this.content = content;
+        this.localDateTime = localDateTime;
+    }
 }
