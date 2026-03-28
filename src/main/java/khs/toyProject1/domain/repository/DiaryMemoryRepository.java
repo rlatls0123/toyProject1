@@ -1,6 +1,7 @@
 package khs.toyProject1.domain.repository;
 
 import khs.toyProject1.domain.diary.Diary;
+import khs.toyProject1.web.diary.DiaryUpdateForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,13 @@ public class DiaryMemoryRepository {
 
     public List<Diary> findAll() {
         return new ArrayList<>(diaryMap.values());
+    }
+
+    public void update(Long id, DiaryUpdateForm form) {
+        Diary diary = diaryMap.get(id);
+        diary.setTitle(form.getTitle());
+        diary.setContent(form.getContent());
+        diary.setLocalDateTime(form.getLocalDateTime());
     }
 
 

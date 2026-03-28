@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -52,25 +49,38 @@ public class DiaryController {
 
     @PostMapping("/write")
     public String write(@ModelAttribute("diary") DiarySaveForm form) {
-        log.info("form={}",form);
+        log.info("form={}", form);
         Diary diary = new Diary();
         diary.setTitle(form.getTitle());
         diary.setContent(form.getContent());
         diary.setLocalDateTime(LocalDateTime.now());
         dmRepository.save(diary);
-        log.info("diary={}",diary);
+        log.info("diary={}", diary);
 
         return "redirect:/diaries";
     }
 
-//        @PostMapping("/write")
-//        public String write(@ModelAttribute("board") Board board, BindingResult result, RedirectAttributes redirectAttributes) {
-//            if (result.hasErrors()) {
-//                return "board/write";
-//            }
+    @GetMapping("/{diaryId}")
+    public String diary(@PathVariable("diaryId") Long id, Model model) {
+        Diary diary = dmRepository.findById(id);
+        model.addAttribute("diary", diary);
+        return "diary/diary";
+    }
 
-//            boardService.save(board);
-//            redirectAttributes.addFlashAttribute("message", "게시글이 등록되었습니다.");
-//            return "redirect:/board/list";
-//    }
+    @GetMapping("/{diaryId}/edit")
+    public String edit(@PathVariable("diaryId") Long id, Model model) {
+        Diary diary = dmRepository.findById(id);
+        model.addAttribute("diary", diary);
+        return "diary/edit";
+    }
+
+    @PostMapping("/{diaryId}/edit")
+    public String edit(@PathVariable Long diaryId, @ModelAttribute("diary") DiaryUpdateForm form) {
+//        Diary diary = dmRepository.findById(id);
+        log.info("form={}", form);
+        dmRepository.update(diaryId, form);
+
+
+        return "redirect:/diaries/{diaryId}";
+    }
 }

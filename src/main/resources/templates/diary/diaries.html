@@ -9,6 +9,7 @@
 <div class="board-container">
   <h1>게시판</h1>
   <button class="my-button" th:onclick="|location.href='@{/diaries/write}'|" type="button">글쓰기</button>
+  <form th:action="@{/logout}" method="post">  <button class="my-button" type="submit">로그아웃</button></form>
 
   <table class="board-table">
     <thead>
@@ -23,7 +24,7 @@
     <tbody>
     <tr th:each=" diary : ${diaryList}">
       <td th:text="${diary.id}">1</td>
-      <td><a href="#" th:text="${diary.title}">게시글 제목</a></td>
+      <td><a th:href="@{/diaries/{diaryId}(diaryId=${diary.id})}" th:text="${diary.title}">게시글 제목</a></td>
       <td th:test="${diary.localDateTime}">2023-03-21</td>
       <td>100</td>
     </tr>
