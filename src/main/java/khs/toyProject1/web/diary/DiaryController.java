@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpSession;
 import khs.toyProject1.domain.diary.Diary;
 import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.DiaryMemoryRepository;
+import khs.toyProject1.domain.repository.JpaRepository.JpaDiaryRepository;
+import khs.toyProject1.domain.repository.JpaRepository.JpaMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,10 +25,20 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryMemoryRepository dmRepository;
+    private final JpaMemberRepository jpaMemberRepository;
+    private final JpaDiaryRepository jpaDiaryRepository;
 
-    @GetMapping
+
+//    @GetMapping
     public String diaries(Model model) {
         List<Diary> diaryList = dmRepository.findAll();
+        model.addAttribute("diaryList", diaryList);
+        return "/diary/diaries";
+    }
+
+    @GetMapping
+    public String jpaDiaries(Model model) {
+        List<Diary> diaryList = jpaDiaryRepository.findAll();
         model.addAttribute("diaryList", diaryList);
         return "/diary/diaries";
     }
@@ -48,7 +60,7 @@ public class DiaryController {
     }
 
     @PostMapping("/write")
-    public String write(@ModelAttribute("diary") DiarySaveForm form) {
+    public String save(@ModelAttribute("diary") DiarySaveForm form) {
         log.info("form={}", form);
         Diary diary = new Diary();
         diary.setTitle(form.getTitle());
