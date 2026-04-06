@@ -26,7 +26,7 @@ public class LoginController {
         return "login/Login";
     }
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String login(@Valid @ModelAttribute("LoginForm") LoginForm loginForm, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectUrl,
                         HttpServletRequest request) {
@@ -36,12 +36,42 @@ public class LoginController {
 
         log.info("loginForm={}", loginForm);
 
+        //회원가입이 되어있는지 확인
         Member loginMember = loginService.login(loginForm.getLoginId(), loginForm.getLoginPassword());
 
+
         if (loginMember == null) {
+            log.info("loginForm={}",loginForm);
             return "login/Login";
         }
 
+        //세션에 저장
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", loginMember);
+
+        return "redirect:" + redirectUrl;
+    }
+
+    @PostMapping("/login")
+    public String jpaLogin(@Valid @ModelAttribute("LoginForm") LoginForm loginForm, BindingResult bindingResult,
+                        @RequestParam(defaultValue = "/") String redirectUrl,
+                        HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "login/Login";
+        }
+
+        log.info("loginForm={}", loginForm);
+
+        //회원가입이 되어있는지 확인
+        Member loginMember = loginService.jpaLogin(loginForm.getLoginId(), loginForm.getLoginPassword());
+
+
+        if (loginMember == null) {
+            log.info("loginForm={}",loginForm);
+            return "login/Login";
+        }
+
+        //세션에 저장
         HttpSession session = request.getSession();
         session.setAttribute("loginMember", loginMember);
 
