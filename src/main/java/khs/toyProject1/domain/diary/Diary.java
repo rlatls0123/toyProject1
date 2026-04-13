@@ -28,9 +28,28 @@ public class Diary {
     public Diary() {
     }
 
+    public Diary(Member member, String title, String content) {
+        setMember(member);
+        this.title = title;
+        this.content = content;
+    }
+
     public Diary(String title, String content, LocalDateTime localDateTime) {
         this.title = title;
         this.content = content;
         this.localDateTime = localDateTime;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getDiaries().add(this);
+    }
+
+    public static Diary createDiary(Member member,String title, String content) {
+        Diary diary = new Diary(member, title, content);
+        diary.setLocalDateTime(LocalDateTime.now());
+
+        return diary;
+
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/diaries")
@@ -72,10 +73,25 @@ public class DiaryController {
         return "redirect:/diaries";
     }
 
-    @GetMapping("/{diaryId}")
+//    @GetMapping("/{diaryId}")
     public String diary(@PathVariable("diaryId") Long id, Model model) {
         Diary diary = dmRepository.findById(id);
         model.addAttribute("diary", diary);
+        return "diary/diary";
+    }
+
+    @GetMapping("/{diaryId}")
+    public String jpaDiary(@PathVariable("diaryId") Long id, Model model) {
+
+        Optional<Diary> diary = jpaDiaryRepository.findById(id);
+        //Diary diary = dmRepository.findById(id);
+        if (diary.isPresent()) {
+            log.info("diary.id={}", diary.get().getId());
+            model.addAttribute("diary", diary.get());
+
+        } else {
+            log.info("diary.id = null");
+        }
         return "diary/diary";
     }
 

@@ -33,11 +33,18 @@ public class TestDataInit {
         jpaMemberRepository.save(member);
 
 
-        diaryMemoryRepository.save(new Diary("test1", "test1입니다.", LocalDateTime.of(2026, 3, 26, 14, 00)));
-        diaryMemoryRepository.save(new Diary("test2", "test2입니다.", LocalDateTime.of(2026, 3, 26, 14, 01)));
 
-        jpaDiaryRepository.save(new Diary("test1", "test1입니다.", LocalDateTime.of(2026, 4, 6, 10, 00)));
-        jpaDiaryRepository.save(new Diary("test2", "test2입니다.", LocalDateTime.of(2026, 4, 6, 10, 22)));
+        //메모리로 저장
+//        diaryMemoryRepository.save(new Diary("test1", "test1입니다.", LocalDateTime.of(2026, 3, 26, 14, 00)));
+//        diaryMemoryRepository.save(new Diary("test2", "test2입니다.", LocalDateTime.of(2026, 3, 26, 14, 01)));
+
+        //jpa로 저장 - new생성으로 저장(Diary.memberId == null)
+//        jpaDiaryRepository.save(new Diary("test1", "test1입니다.", LocalDateTime.of(2026, 4, 6, 10, 00)));
+//        jpaDiaryRepository.save(new Diary("test2", "test2입니다.", LocalDateTime.of(2026, 4, 6, 10, 22)));
+
+        //jpa로 저장 - 엔티티에 로직 구현(Diary.memberId = member.id)
+        jpaDiaryRepository.save(Diary.createDiary(member, "test1", "test1입니다."));
+        jpaDiaryRepository.save(Diary.createDiary(member, "test2", "test2입니다."));
     }
 
 }
