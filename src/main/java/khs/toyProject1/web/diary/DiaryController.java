@@ -7,9 +7,11 @@ import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.DiaryMemoryRepository;
 import khs.toyProject1.domain.repository.JpaRepository.JpaDiaryRepository;
 import khs.toyProject1.domain.repository.JpaRepository.JpaMemberRepository;
+import khs.toyProject1.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.util.Optional;
 @RequestMapping("/diaries")
 @RequiredArgsConstructor
 @Slf4j
+//@Transactional
 public class DiaryController {
 
     private final DiaryMemoryRepository dmRepository;
@@ -50,17 +53,22 @@ public class DiaryController {
 
 
         // 세션에 포함되어있는 이름 사용
-        HttpSession session = request.getSession();
-        Member loginMember = (Member) session.getAttribute("loginMember");
+        Member loginMember = getSessoinLoginMember(request);
         String name = loginMember.getName();
-
-
         model.addAttribute("name", name);
+
+        log.info("name={}", name);
 
         return "diary/write";
     }
 
-    @PostMapping("/write")
+    private static Member getSessoinLoginMember(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        return loginMember;
+    }
+
+    //    @PostMapping("/write")
     public String save(@ModelAttribute("diary") DiarySaveForm form) {
         log.info("form={}", form);
         Diary diary = new Diary();
@@ -69,6 +77,23 @@ public class DiaryController {
         diary.setLocalDateTime(LocalDateTime.now());
         dmRepository.save(diary);
         log.info("diary={}", diary);
+
+        return "redirect:/diaries";
+    }
+    @PostMapping("/write")
+    public String jpaSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
+//        log.info("form={}", form);
+//        Diary diary = new Diary();
+//        diary.setTitle(form.getTitle());
+//        diary.setContent(form.getContent());
+//        diary.setLocalDateTime(LocalDateTime.now());
+//        dmRepository.save(diary);
+//        log.info("diary={}", diary);
+
+        Member sessoinLoginMember = getSessoinLoginMember(request);
+
+        Optional<Member> byId = jpaMemberRepository.findById(sessoinLoginMember.getId());
+        jpaDiaryRepository.save(Diary.createDiary(byId.get(), form.getTitle(), form.getContent()));
 
         return "redirect:/diaries";
     }
