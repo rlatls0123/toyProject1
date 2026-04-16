@@ -7,7 +7,9 @@ import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.DiaryMemoryRepository;
 import khs.toyProject1.domain.repository.JpaRepository.JpaDiaryRepository;
 import khs.toyProject1.domain.repository.JpaRepository.JpaMemberRepository;
-import khs.toyProject1.domain.repository.MemberRepository;
+import khs.toyProject1.domain.repository.JpaRepository.MemberRepository;
+import khs.toyProject1.domain.service.DiaryService;
+import khs.toyProject1.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,12 +27,15 @@ import java.util.Optional;
 @RequestMapping("/diaries")
 @RequiredArgsConstructor
 @Slf4j
-//@Transactional
+@Transactional
 public class DiaryController {
 
     private final DiaryMemoryRepository dmRepository;
     private final JpaMemberRepository jpaMemberRepository;
     private final JpaDiaryRepository jpaDiaryRepository;
+
+    private final DiaryService diaryService;
+    private final MemberService memberService;
 
 
 //    @GetMapping
@@ -40,9 +45,16 @@ public class DiaryController {
         return "/diary/diaries";
     }
 
-    @GetMapping
+//    @GetMapping
     public String jpaDiaries(Model model) {
         List<Diary> diaryList = jpaDiaryRepository.findAll();
+        model.addAttribute("diaryList", diaryList);
+        return "/diary/diaries";
+    }
+
+    @GetMapping
+    public String serviceJpaDiaries(Model model) {
+        List<Diary> diaryList = diaryService.findAll();
         model.addAttribute("diaryList", diaryList);
         return "/diary/diaries";
     }
@@ -50,7 +62,6 @@ public class DiaryController {
     @GetMapping("/write")
     public String writeForm(Model model, HttpServletRequest request) {
         model.addAttribute("diary", new Diary());
-
 
         // 세션에 포함되어있는 이름 사용
         Member loginMember = getSessoinLoginMember(request);
@@ -80,7 +91,7 @@ public class DiaryController {
 
         return "redirect:/diaries";
     }
-    @PostMapping("/write")
+//    @PostMapping("/write")
     public String jpaSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
 //        log.info("form={}", form);
 //        Diary diary = new Diary();
@@ -98,6 +109,15 @@ public class DiaryController {
         return "redirect:/diaries";
     }
 
+    @PostMapping("/write")
+    public String serviceSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
+
+        Member member = memberService.findById(getSessoinLoginMember(request).getId());
+        diaryService.save(Diary.createDiary(member, form.getTitle(), form.getContent()));
+
+        return "redirect:/diaries";
+    }
+
 //    @GetMapping("/{diaryId}")
     public String diary(@PathVariable("diaryId") Long id, Model model) {
         Diary diary = dmRepository.findById(id);
@@ -105,7 +125,7 @@ public class DiaryController {
         return "diary/diary";
     }
 
-    @GetMapping("/{diaryId}")
+//    @GetMapping("/{diaryId}")
     public String jpaDiary(@PathVariable("diaryId") Long id, Model model) {
 
         Optional<Diary> diary = jpaDiaryRepository.findById(id);
@@ -120,20 +140,45 @@ public class DiaryController {
         return "diary/diary";
     }
 
-    @GetMapping("/{diaryId}/edit")
+    @GetMapping("/{diaryId}")
+    public String serviceJpaDiary(@PathVariable("diaryId") Long id, Model model) {
+
+        Diary diary = diaryService.findById(id);
+        model.addAttribute("diary", diary);
+
+        return "diary/diary";
+    }
+
+//    @GetMapping("/{diaryId}/edit")
     public String edit(@PathVariable("diaryId") Long id, Model model) {
         Diary diary = dmRepository.findById(id);
         model.addAttribute("diary", diary);
         return "diary/edit";
     }
 
-    @PostMapping("/{diaryId}/edit")
+    @GetMapping("/{diaryId}/edit")
+    public String serviceEdit(@PathVariable("diaryId") Long id, Model model) {
+        Diary diary = diaryService.findById(id);
+        model.addAttribute("diary", diary);
+        log.info("diary.id={}",diary.getId());
+        return "diary/edit";
+    }
+
+//    @PostMapping("/{diaryId}/edit")
     public String edit(@PathVariable Long diaryId, @ModelAttribute("diary") DiaryUpdateForm form) {
 //        Diary diary = dmRepository.findById(id);
         log.info("form={}", form);
         dmRepository.update(diaryId, form);
 
 
+        return "redirect:/diaries/{diaryId}";
+    }
+
+    @PostMapping("/{diaryId}/edit")
+    public String serviceEdit(@PathVariable Long diaryId, @ModelAttribute("diary") DiaryUpdateForm form) {
+        log.info("form={}", form);
+
+        diaryService.update(diaryId,form);
         return "redirect:/diaries/{diaryId}";
     }
 }
