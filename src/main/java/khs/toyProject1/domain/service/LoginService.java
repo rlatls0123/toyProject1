@@ -22,11 +22,11 @@ public class LoginService {
 
    public Member jpaLogin(String loginId, String password) {
        Member member = jpaMemberRepository.findByLoginId(loginId)
-               .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+               .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다. "));
 
        log.info("password={},member.password={}",password,member.getPassword());
        if ( !password.equals(member.getPassword()) ) {
-           throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+           throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
        }
 
        return member;

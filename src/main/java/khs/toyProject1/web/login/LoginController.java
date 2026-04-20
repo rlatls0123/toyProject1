@@ -61,15 +61,22 @@ public class LoginController {
         }
 
         log.info("loginForm={}", loginForm);
-
-        //회원가입이 되어있는지 확인
-        Member loginMember = loginService.jpaLogin(loginForm.getLoginId(), loginForm.getLoginPassword());
-
-
-        if (loginMember == null) {
-            log.info("loginForm={}",loginForm);
+        Member loginMember;
+        try {
+            //회원가입이 되어있는지 확인
+            loginMember = loginService.jpaLogin(loginForm.getLoginId(), loginForm.getLoginPassword());
+        } catch (Exception e) {
+            bindingResult.reject("loginFail", e.getMessage());
             return "login/Login";
         }
+
+//        if (loginMember == null ) {
+//            log.info("loginForm={}",loginForm);
+//            return "login/Login";
+//        }
+
+
+
 
         //세션에 저장
         HttpSession session = request.getSession();
