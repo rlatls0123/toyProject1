@@ -14,14 +14,14 @@ public class MainController {
 
 //    @GetMapping("/")
     public String home() {
-        return "home";
+        return "index";
     }
 
     @GetMapping("/")
     public String loginHome(@SessionAttribute(required = false) Member loginMember, Model model) {
         if (loginMember == null) {
             log.info("null session");
-            return "home";
+            return "index";
         }
         model.addAttribute("member", loginMember);
         return "loginHome";

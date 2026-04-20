@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiaryService {
 
-    private final JpaDiaryRepository jpaDiaryRepository;
+//    private final JpaDiaryRepository jpaDiaryRepository;
     private final DiaryRepository repository;
 
 //    public void save(Diary diary) {

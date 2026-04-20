@@ -25,7 +25,9 @@
     <tr th:each=" diary : ${diaryList}">
       <td th:text="${diary.id}">1</td>
       <td><a th:href="@{/diaries/{diaryId}(diaryId=${diary.id})}" th:text="${diary.title}">게시글 제목</a></td>
-      <td th:test="${diary.localDateTime}">2023-03-21</td>
+      <td th:text="${diary.member.name}">***</td>
+      <td th:text="${#temporals.format(diary.localDateTime,'yyyy-MM-dd HH:mm')}">2026-03-14</td>
+<!--      <td th:text="${diary.localDateTime}">00</td>-->
       <td>100</td>
     </tr>
 
