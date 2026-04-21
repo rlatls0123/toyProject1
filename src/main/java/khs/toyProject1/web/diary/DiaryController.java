@@ -12,6 +12,11 @@ import khs.toyProject1.domain.service.DiaryService;
 import khs.toyProject1.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -52,10 +57,33 @@ public class DiaryController {
         return "/diary/diaries";
     }
 
+//    @GetMapping
+//    public String serviceJpaDiaries(Model model) {
+//        List<Diary> diaryList = diaryService.findAll();
+//        model.addAttribute("diaryList", diaryList);
+//        return "/diary/diaries";
+//    }
+
     @GetMapping
-    public String serviceJpaDiaries(Model model) {
-        List<Diary> diaryList = diaryService.findAll();
-        model.addAttribute("diaryList", diaryList);
+    public String getDiaries(Model model, @PageableDefault(page = 0,size = 5,sort = "id",direction = Sort.Direction.DESC)Pageable pageable) {
+//        ResponseEntity<Page<Member>>
+//        Page<Diary> result = DiaryService.getDiaryList(page, size);
+//        return ResponseEntity.ok(result);
+
+        Page<Diary> all = diaryService.findAll(pageable);
+        model.addAttribute("diaryList",all); //글 전체
+
+        int currentPage = all.getNumber(); //0부터 시작
+        int totalPages = all.getTotalPages();
+        log.info("currentPage={},totalPages={}",currentPage,totalPages);
+
+        int startPage = (currentPage / 10) * 10;
+        int endPage = Math.min(startPage + 10 - 1, totalPages - 1);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        log.info("startPage={},endPage={}",startPage,endPage);
+
+
         return "/diary/diaries";
     }
 

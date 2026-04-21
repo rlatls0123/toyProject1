@@ -2,13 +2,12 @@ package khs.toyProject1.domain.service;
 
 import khs.toyProject1.domain.diary.Diary;
 import khs.toyProject1.domain.repository.JpaRepository.DiaryRepository;
-import khs.toyProject1.domain.repository.JpaRepository.JpaDiaryRepository;
 import khs.toyProject1.web.diary.DiaryUpdateForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -42,9 +41,15 @@ public class DiaryService {
 //        return jpaDiaryRepository.findAll();
 //    }
 
-    public List<Diary> findAll() {
-        return repository.findAll();
+//    public List<Diary> findAll() {
+//        return repository.findAll();
+//    }
+
+    public Page<Diary> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
+
+
 
     public void update(Long id, DiaryUpdateForm  form) {
         repository.update(id,form);

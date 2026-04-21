@@ -34,12 +34,23 @@
     <!-- 더 많은 게시글 추가 -->
     </tbody>
   </table>
+<!--  <div class="pagination">-->
+<!--    <a href="#">이전</a>-->
+<!--    <a href="#">1</a>-->
+<!--    <a href="#">2</a>-->
+<!--    <a href="#">3</a>-->
+<!--    <a href="#">다음</a>-->
+<!--  </div>-->
+
   <div class="pagination">
-    <a href="#">이전</a>
-    <a href="#">1</a>
-    <a href="#">2</a>
-    <a href="#">3</a>
-    <a href="#">다음</a>
+    <a th:if="${!diaryList.first}" th:href="@{/diaries(page=${diaryList.number - 1})}"  href="#">이전</a>
+    <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/diaries(page=${i})}"
+               th:text="${i + 1}"
+               th:classappend="${i == diaryList .number} ? 'current' : ''"></a>
+        </span>
+    <a th:if="${!diaryList.last}" th:href="@{/diaries(page=${diaryList.number + 1})}">다음</a>
+
   </div>
 </div>
 </body>
