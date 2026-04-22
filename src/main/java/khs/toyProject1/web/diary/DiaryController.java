@@ -185,8 +185,14 @@ public class DiaryController {
     }
 
     @GetMapping("/{diaryId}/edit")
-    public String serviceEdit(@PathVariable("diaryId") Long id, Model model) {
+    public String serviceEdit(@PathVariable("diaryId") Long id, Model model, HttpServletRequest request) {
         Diary diary = diaryService.findById(id);
+        Member loginMember = getSessoinLoginMember(request);
+        if (!diary.getMember().getId().equals(loginMember.getId()) ) {
+            log.info("loginID={}, diary.member.id={}",loginMember.getId(),diary.getMember().getId());
+            return "redirect:/diaries/{diaryId}";
+        }
+
         model.addAttribute("diary", diary);
         log.info("diary.id={}",diary.getId());
         return "diary/edit";
