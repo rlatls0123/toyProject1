@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
                         ,"/login"
                         ,"/logout"
                         ,"/add"
+                        ,"/css/**", "/*.ico", "/error"
 
                         );
     }
