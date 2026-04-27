@@ -84,7 +84,7 @@ public class DiaryController {
         log.info("startPage={},endPage={}",startPage,endPage);
 
 
-        return "/diary/diaries";
+        return "diary/diaries";
     }
 
     @GetMapping("/write")
