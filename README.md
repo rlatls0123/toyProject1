@@ -39,7 +39,7 @@ Language: Java 17
 
 
 ## 🚀프로젝트 이미지 ##
-<img width="1920" height="786" alt="image" src="https://github.com/user-attachments/assets/8eaeca74-b08a-4ac4-afd3-f3d72efbb5fd" />
+<img width="1920" height="826" alt="image" src="https://github.com/user-attachments/assets/2b23bf56-754f-47ba-9dab-446d2ea91c19" />
 
 <img width="1920" height="821" alt="image" src="https://github.com/user-attachments/assets/ea5ed2d4-f189-4b60-979a-65f48a9d7657" />
 
