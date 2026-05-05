@@ -1,13 +1,11 @@
 # 🚀 프로젝트 이름 (toyProject)
 > CRUD가 가능한 게시판입니다. 같은 기능을 다양한 방법으로 수정하며 사용중입니다. 
-![Main Screenshot](<img width="1920" height="835" alt="image" src="https://github.com/user-attachments/assets/4f668635-1d36-47f8-a8dd-dc1e3c6d339c" />
-)
 
 ## 📋 목차 (Table of Contents)
 1. [소개](#-소개)
 2. [주요 기능](#-주요-기능)
 3. [Tech Stack](#-Tech-Stack)
-
+4. [프로젝트 이미지](#-Tech-Stack)
 
 ---
 
@@ -38,3 +36,20 @@ Language: Java 17
 | **Backend** | Language: Java 17 , Spring Boot 4.0.3 , Spring Data JPA |
 | **Database** | MySQL 8.0 |
   | **Infrastructure** | AWS EC2 |
+
+
+## 🚀프로젝트 이미지 ##
+<img width="1920" height="786" alt="image" src="https://github.com/user-attachments/assets/8eaeca74-b08a-4ac4-afd3-f3d72efbb5fd" />
+
+<img width="1920" height="821" alt="image" src="https://github.com/user-attachments/assets/ea5ed2d4-f189-4b60-979a-65f48a9d7657" />
+
+<img width="1920" height="837" alt="image" src="https://github.com/user-attachments/assets/1ff14a9b-82de-4aec-a9e3-964f36bc06bf" />
+
+<img width="1920" height="826" alt="image" src="https://github.com/user-attachments/assets/dfc4cf1d-1d18-4819-a4ef-d1ace87dd625" />
+
+<img width="1920" height="829" alt="image" src="https://github.com/user-attachments/assets/4ccbb415-2589-45d0-9ff8-a97bfe886fbd" />
+
+
+<img width="1920" height="827" alt="image" src="https://github.com/user-attachments/assets/83efe9fa-e078-4a38-9448-162e32f8e896" />
+
+
