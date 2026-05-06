@@ -26,8 +26,7 @@
 
 
 ## 🛠 Tech Stack
-* **Backend**
-Language: Java 17
+
 
 
 | 분류 | 기술 |
