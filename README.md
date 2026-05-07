@@ -31,7 +31,7 @@
 
 | 분류 | 기술 |
 | :--- | :--- |
-| **Frontend** | google Gemini 사용 |
+| **Frontend** |  HTML, CSS, Thymeleaf, google Gemini |
 | **Backend** | Language: Java 17 , Spring Boot 4.0.3 , Spring Data JPA |
 | **Database** | MySQL 8.0 |
   | **Infrastructure** | AWS EC2 |
