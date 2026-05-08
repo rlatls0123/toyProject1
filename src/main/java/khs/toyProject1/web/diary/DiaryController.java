@@ -43,14 +43,14 @@ public class DiaryController {
     private final MemberService memberService;
 
 
-//    @GetMapping
+    //    @GetMapping
     public String diaries(Model model) {
         List<Diary> diaryList = dmRepository.findAll();
         model.addAttribute("diaryList", diaryList);
         return "/diary/diaries";
     }
 
-//    @GetMapping
+    //    @GetMapping
     public String jpaDiaries(Model model) {
         List<Diary> diaryList = jpaDiaryRepository.findAll();
         model.addAttribute("diaryList", diaryList);
@@ -65,23 +65,35 @@ public class DiaryController {
 //    }
 
     @GetMapping
-    public String getDiaries(Model model, @PageableDefault(page = 0,size = 5,sort = "id",direction = Sort.Direction.DESC)Pageable pageable) {
+    public String getDiaries(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            , HttpServletRequest request) {
 //        ResponseEntity<Page<Member>>
 //        Page<Diary> result = DiaryService.getDiaryList(page, size);
 //        return ResponseEntity.ok(result);
 
         Page<Diary> all = diaryService.findAll(pageable);
-        model.addAttribute("diaryList",all); //글 전체
+        model.addAttribute("diaries", all); //글 전체
 
-        int currentPage = all.getNumber(); //0부터 시작
-        int totalPages = all.getTotalPages();
-        log.info("currentPage={},totalPages={}",currentPage,totalPages);
+//        int currentPage = all.getNumber(); //0부터 시작
+//        int totalPages = all.getTotalPages();
+//        log.info("currentPage={},totalPages={}",currentPage,totalPages);
+//        int startPage = (currentPage / 10) * 10;
+//        int endPage = Math.min(startPage + 10 - 1, totalPages - 1);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
 
-        int startPage = (currentPage / 10) * 10;
-        int endPage = Math.min(startPage + 10 - 1, totalPages - 1);
+        // 페이징 계산 (화면에 표시할 시작/끝 페이지 번호)
+        int nowPage = all.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 2, 1);
+        int endPage = Math.min(nowPage + 2, all.getTotalPages());
+
+        model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        log.info("startPage={},endPage={}",startPage,endPage);
+
+        log.info("nowPage={}, startPage={}, endPage={}", nowPage, startPage, endPage);
+
+        model.addAttribute("member", getSessoinLoginMember(request).getName());
 
 
         return "/diary/diaries";
@@ -119,8 +131,9 @@ public class DiaryController {
 
         return "redirect:/diaries";
     }
-//    @PostMapping("/write")
-    public String jpaSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
+
+    //    @PostMapping("/write")
+    public String jpaSave(@ModelAttribute("diary") DiarySaveForm form, HttpServletRequest request) {
 //        log.info("form={}", form);
 //        Diary diary = new Diary();
 //        diary.setTitle(form.getTitle());
@@ -138,7 +151,7 @@ public class DiaryController {
     }
 
     @PostMapping("/write")
-    public String serviceSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
+    public String serviceSave(@ModelAttribute("diary") DiarySaveForm form, HttpServletRequest request) {
 
         Member member = memberService.findById(getSessoinLoginMember(request).getId());
         diaryService.save(Diary.createDiary(member, form.getTitle(), form.getContent()));
@@ -146,14 +159,14 @@ public class DiaryController {
         return "redirect:/diaries";
     }
 
-//    @GetMapping("/{diaryId}")
+    //    @GetMapping("/{diaryId}")
     public String diary(@PathVariable("diaryId") Long id, Model model) {
         Diary diary = dmRepository.findById(id);
         model.addAttribute("diary", diary);
         return "diary/diary";
     }
 
-//    @GetMapping("/{diaryId}")
+    //    @GetMapping("/{diaryId}")
     public String jpaDiary(@PathVariable("diaryId") Long id, Model model) {
 
         Optional<Diary> diary = jpaDiaryRepository.findById(id);
@@ -177,7 +190,7 @@ public class DiaryController {
         return "diary/diary";
     }
 
-//    @GetMapping("/{diaryId}/edit")
+    //    @GetMapping("/{diaryId}/edit")
     public String edit(@PathVariable("diaryId") Long id, Model model) {
         Diary diary = dmRepository.findById(id);
         model.addAttribute("diary", diary);
@@ -188,17 +201,17 @@ public class DiaryController {
     public String serviceEdit(@PathVariable("diaryId") Long id, Model model, HttpServletRequest request) {
         Diary diary = diaryService.findById(id);
         Member loginMember = getSessoinLoginMember(request);
-        if (!diary.getMember().getId().equals(loginMember.getId()) ) {
-            log.info("loginID={}, diary.member.id={}",loginMember.getId(),diary.getMember().getId());
+        if (!diary.getMember().getId().equals(loginMember.getId())) {
+            log.info("loginID={}, diary.member.id={}", loginMember.getId(), diary.getMember().getId());
             return "redirect:/diaries/{diaryId}";
         }
 
         model.addAttribute("diary", diary);
-        log.info("diary.id={}",diary.getId());
+        log.info("diary.id={}", diary.getId());
         return "diary/edit";
     }
 
-//    @PostMapping("/{diaryId}/edit")
+    //    @PostMapping("/{diaryId}/edit")
     public String edit(@PathVariable Long diaryId, @ModelAttribute("diary") DiaryUpdateForm form) {
 //        Diary diary = dmRepository.findById(id);
         log.info("form={}", form);
@@ -212,7 +225,13 @@ public class DiaryController {
     public String serviceEdit(@PathVariable Long diaryId, @ModelAttribute("diary") DiaryUpdateForm form) {
         log.info("form={}", form);
 
-        diaryService.update(diaryId,form);
+        diaryService.update(diaryId, form);
         return "redirect:/diaries/{diaryId}";
+    }
+
+    @PostMapping("/delete/{diaryId}")
+    public String delete(@PathVariable Long diaryId) {
+        diaryService.delete(diaryId);
+        return "redirect:/diaries";
     }
 }
