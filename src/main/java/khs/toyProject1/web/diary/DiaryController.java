@@ -2,7 +2,6 @@ package khs.toyProject1.web.diary;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import khs.toyProject1.domain.diary.Diary;
 import khs.toyProject1.domain.member.Member;
 import khs.toyProject1.domain.repository.DiaryMemoryRepository;
@@ -65,7 +64,7 @@ public class DiaryController {
 //        return "/diary/diaries";
 //    }
 
-//    @GetMapping
+    @GetMapping
     public String getDiaries(Model model, @PageableDefault(page = 0,size = 5,sort = "id",direction = Sort.Direction.DESC)Pageable pageable) {
 //        ResponseEntity<Page<Member>>
 //        Page<Diary> result = DiaryService.getDiaryList(page, size);
@@ -85,32 +84,12 @@ public class DiaryController {
         log.info("startPage={},endPage={}",startPage,endPage);
 
 
-        return "diary/diaries";
-    }
-
-    @GetMapping
-    public String getDiariesWithGemini(Model model, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, HttpServletRequest request) {
-
-        Member member = getSessoinLoginMember(request);
-        model.addAttribute("member", member);
-        Page<Diary> all = diaryService.findAll(pageable);
-        model.addAttribute("diaries", all);
-
-        // 페이징 계산 (화면에 표시할 시작/끝 페이지 번호)
-        int nowPage = all.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 2, 1);
-        int endPage = Math.min(nowPage + 2, all.getTotalPages());
-
-        model.addAttribute("nowPage", nowPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-
-        return "diary/diaries";
+        return "/diary/diaries";
     }
 
     @GetMapping("/write")
     public String writeForm(Model model, HttpServletRequest request) {
-        model.addAttribute("diary", new DiarySaveForm());
+        model.addAttribute("diary", new Diary());
 
         // 세션에 포함되어있는 이름 사용
         Member loginMember = getSessoinLoginMember(request);
@@ -158,20 +137,8 @@ public class DiaryController {
         return "redirect:/diaries";
     }
 
-//    @PostMapping("/write")
-    public String serviceSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
-
-        Member member = memberService.findById(getSessoinLoginMember(request).getId());
-        diaryService.save(Diary.createDiary(member, form.getTitle(), form.getContent()));
-
-        return "redirect:/diaries";
-    }
-
     @PostMapping("/write")
-    public String serviceSaveWithGemini(@Valid @ModelAttribute("diary") DiarySaveForm form,BindingResult bindingResult, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "diary/write";
-        }
+    public String serviceSave(@ModelAttribute("diary") DiarySaveForm form,HttpServletRequest request) {
 
         Member member = memberService.findById(getSessoinLoginMember(request).getId());
         diaryService.save(Diary.createDiary(member, form.getTitle(), form.getContent()));
@@ -247,11 +214,5 @@ public class DiaryController {
 
         diaryService.update(diaryId,form);
         return "redirect:/diaries/{diaryId}";
-    }
-
-    @PostMapping("/delete/{diaryId}")
-    public String deleteDiary(@PathVariable Long diaryId) {
-        diaryService.delete(diaryId);
-        return "redirect:/diaries";
     }
 }
