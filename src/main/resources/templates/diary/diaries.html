@@ -1,57 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>diaryList - Simple diaries</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="board-container">
-  <h1>게시판</h1>
-  <button class="my-button" th:onclick="|location.href='@{/diaries/write}'|" type="button">글쓰기</button>
-  <form th:action="@{/logout}" method="post">  <button class="my-button" type="submit">로그아웃</button></form>
+<body class="bg-gray-50 min-h-screen">
 
-  <table class="board-table">
-    <thead>
-    <tr>
-      <th>번호</th>
-      <th>제목</th>
-      <th>작성자</th>
-      <th>작성일</th>
-      <th>조회수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each=" diary : ${diaryList}">
-      <td th:text="${diary.id}">1</td>
-      <td><a th:href="@{/diaries/{diaryId}(diaryId=${diary.id})}" th:text="${diary.title}">게시글 제목</a></td>
-      <td th:text="${diary.member.name}">***</td>
-      <td th:text="${#temporals.format(diary.localDateTime,'yyyy-MM-dd HH:mm')}">2026-03-14</td>
-<!--      <td th:text="${diary.localDateTime}">00</td>-->
-      <td>100</td>
-    </tr>
-
-    <!-- 더 많은 게시글 추가 -->
-    </tbody>
-  </table>
-<!--  <div class="pagination">-->
-<!--    <a href="#">이전</a>-->
-<!--    <a href="#">1</a>-->
-<!--    <a href="#">2</a>-->
-<!--    <a href="#">3</a>-->
-<!--    <a href="#">다음</a>-->
-<!--  </div>-->
-
-  <div class="pagination">
-    <a th:if="${!diaryList.first}" th:href="@{/diaries(page=${diaryList.number - 1})}"  href="#">이전</a>
-    <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/diaries(page=${i})}"
-               th:text="${i + 1}"
-               th:classappend="${i == diaryList .number} ? 'current' : ''"></a>
-        </span>
-    <a th:if="${!diaryList.last}" th:href="@{/diaries(page=${diaryList.number + 1})}">다음</a>
-
+<!-- 상단 네비게이션 -->
+<nav class="bg-white shadow-sm mb-8">
+  <div class="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
+    <a th:href="@{/}" class="text-xl font-bold text-blue-600">My diaries</a>
+    <div class="flex items-center space-x-4">
+      <span class="text-sm text-gray-600">반갑습니다, <strong th:text="${member.name}">사용자</strong>님</span>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="text-sm px-3 py-1 text-gray-500 hover:text-red-500 border border-gray-300 rounded hover:border-red-500 transition">
+          로그아웃
+        </button>
+      </form>
+    </div>
   </div>
-</div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4">
+  <!-- 상단 헤더 및 글쓰기 버튼 -->
+  <div class="flex justify-between items-end mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">자유 게시판</h2>
+      <p class="text-sm text-gray-500 mt-1">다양한 생각을 공유해보세요.</p>
+    </div>
+    <a th:href="@{/diaries/write}" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition">
+      글쓰기
+    </a>
+  </div>
+
+  <!-- 게시글 테이블 -->
+  <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-6 py-4 text-sm font-semibold text-gray-600 w-20">번호</th>
+        <th class="px-6 py-4 text-sm font-semibold text-gray-600">제목</th>
+        <th class="px-6 py-4 text-sm font-semibold text-gray-600 w-32">작성자</th>
+        <th class="px-6 py-4 text-sm font-semibold text-gray-600 w-32">날짜</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+      <!-- 게시글 반복 출력 -->
+      <tr th:each="diary : ${diaries}" class="hover:bg-gray-50 transition cursor-pointer"
+          th:onclick="|location.href='@{/diaries/{id}(id=${diary.id})}'|">
+        <td class="px-6 py-4 text-sm text-gray-500" th:text="${diary.id}">1</td>
+        <td class="px-6 py-4 text-sm font-medium text-gray-800" th:text="${diary.title}">게시글 제목입니다.</td>
+        <td class="px-6 py-4 text-sm text-gray-600" th:text="${diary.member.name}">홍길동</td>
+        <td class="px-6 py-4 text-sm text-gray-400" th:text="${#temporals.format(diary.localDateTime, 'yyyy-MM-dd')}">2024-01-01</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 페이징 버튼 -->
+  <div class="flex justify-center mt-10 mb-20">
+    <nav class="flex items-center space-x-1">
+      <!-- 이전 페이지 -->
+      <a th:href="@{/diaries(page=${diaries.number - 1})}"
+         th:classappend="${diaries.first} ? 'pointer-events-none opacity-30'"
+         class="p-2 border border-gray-300 rounded hover:bg-gray-100">
+        &lt;
+      </a>
+
+      <!-- 페이지 번호 -->
+      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <a th:if="${page != nowPage}"
+           th:href="@{/diaries(page=${page - 1})}"
+           th:text="${page}"
+           class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 text-sm text-gray-600"></a>
+        <span th:if="${page == nowPage}"
+              th:text="${page}"
+              class="px-4 py-2 bg-blue-600 text-white rounded text-sm font-bold shadow-md"></span>
+      </th:block>
+
+      <!-- 다음 페이지 -->
+      <a th:href="@{/diaries(page=${diaries.number + 1})}"
+         th:classappend="${diaries.last} ? 'pointer-events-none opacity-30'"
+         class="p-2 border border-gray-300 rounded hover:bg-gray-100">
+        &gt;
+      </a>
+    </nav>
+  </div>
+</main>
+
 </body>
 </html>

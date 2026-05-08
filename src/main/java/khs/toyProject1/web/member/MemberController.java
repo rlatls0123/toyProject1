@@ -30,8 +30,8 @@ public class MemberController {
 //    }
 
     @GetMapping("/add")
-    public String add(@ModelAttribute("member")Member member) {
-        return "/member/addMember";
+    public String add(@ModelAttribute("member") Member member) {
+        return "member/addMember";
     }
 
 //    @PostMapping("/add")

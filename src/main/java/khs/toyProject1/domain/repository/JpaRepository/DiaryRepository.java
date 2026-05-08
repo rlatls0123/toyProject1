@@ -45,4 +45,8 @@ private final SpringDataJpaDiaryRepository repository;
         diary.setContent(form.getContent());
         diary.setLocalDateTime(LocalDateTime.now());
     }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }

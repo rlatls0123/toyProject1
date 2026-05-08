@@ -52,6 +52,9 @@ public class LoginController {
         return "redirect:" + redirectUrl;
     }
 
+
+
+
     @PostMapping("/login")
     public String jpaLogin(@Valid @ModelAttribute("LoginForm") LoginForm loginForm, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectUrl,

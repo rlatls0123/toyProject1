@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>toyProject</title>
-    <style>
-        .my-button {
-          padding: 10px 20px;
-          font-size: 16px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-
-        .my-button:hover {
-          background-color: #45a049;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Board</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 flex items-center justify-center h-screen">
 
-<button class="my-button" th:onclick="|location.href='@{/login}'|" type="button">로그인</button>
-<button class="my-button" th:onclick="|location.href='@{/add}'|" type="button">회원가입</button>
+<div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md text-center">
+    <!-- 로고 또는 제목 -->
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">My Board</h1>
+    <p class="text-gray-500 mb-8">환영합니다! 커뮤니티에 참여해보세요.</p>
+
+    <!-- 버튼 그룹 -->
+    <div class="space-y-4">
+        <a th:href="@{/login}"
+           class="block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200">
+            로그인
+        </a>
+
+        <a th:href="@{/add}"
+           class="block w-full py-3 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition duration-200">
+            회원가입
+        </a>
+    </div>
+
+    <!-- 하단 링크 (선택사항) -->
+    <div class="mt-6 text-sm text-gray-400">
+        <a th:href="@{/board/list}" class="hover:underline">비회원으로 게시판 둘러보기</a>
+    </div>
+</div>
 
 </body>
 </html>

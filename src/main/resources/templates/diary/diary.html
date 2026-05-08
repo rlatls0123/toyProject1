@@ -3,60 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${diary.id}">새 일기 작성</title>
+  <title>View Post - Simple Board</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 min-h-screen py-12 px-4">
+<body class="bg-gray-50 min-h-screen pb-20">
 
-<div class="max-w-2xl mx-auto bg-white shadow-md rounded-xl overflow-hidden border border-slate-200">
-  <div class="bg-slate-800 px-8 py-6">
-    <h1 class="text-2xl font-bold text-white" th:text="${diary.id}">새 게시글 작성</h1>
-    <p class="text-slate-400 text-sm mt-1">오늘의 소중한 기록을 남겨보세요.</p>
+<nav class="bg-white shadow-sm mb-10">
+  <div class="max-w-4xl mx-auto px-4 h-16 flex items-center">
+    <a th:href="@{/diaries}" class="text-xl font-bold text-blue-600">My Board</a>
   </div>
+</nav>
 
+<main class="max-w-4xl mx-auto px-4">
+  <article class="bg-white rounded-2xl shadow-sm overflow-hidden">
+    <!-- 제목 영역 -->
+    <header class="p-8 border-b border-gray-100">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4" th:text="${diary.title}">게시글 제목입니다.</h1>
+      <div class="flex items-center text-sm text-gray-500 space-x-4">
+        <span class="font-medium text-gray-700" th:text="${diary.member.name}">작성자 이름</span>
+        <span>•</span>
+        <span th:text="${#temporals.format(diary.localDateTime, 'yyyy-MM-dd HH:mm')}">2024-05-04 12:00</span>
+      </div>
+    </header>
 
-    <div>
-      <label for="title" class="block text-sm font-semibold text-slate-700 mb-2">제목</label>
-      <input type="text" id="title"
-             th:value="${diary.title}" readonly
-             class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition duration-200">
-    </div>
+    <!-- 본문 영역 -->
+    <section class="p-8 min-h-[300px] text-gray-700 leading-relaxed whitespace-pre-wrap" th:text="${diary.content}">
+      여기에 게시글 본문 내용이 출력됩니다.
+    </section>
 
-  <div>
-      <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">작성자</label>
-      <input type="text" id="name"
-             th:value="${diary.member.name}" readonly
-             class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition duration-200">
-    <p class="text-xs text-slate-400 mt-2">※ 작성자 정보는 로그인 정보로 자동 고정됩니다.</p>
+    <!-- 하단 버튼 영역 -->
+    <footer class="p-8 bg-gray-50 flex justify-between items-center">
+      <a th:href="@{/diaries}" class="px-5 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-white transition">목록으로</a>
 
-    </div>
-
-<!--    <div>-->
-<!--      <label for="id" class="block text-sm font-semibold text-slate-700 mb-2">작성자</label>-->
-<!--      <input type="text" id="id"-->
-<!--             th:text="${diary.id}"-->
-<!--             class="w-full px-4 py-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed outline-none font-medium">-->
-<!--      <p class="text-xs text-slate-400 mt-2">※ 작성자 정보는 로그인 정보로 자동 고정됩니다.</p>-->
-<!--    </div>-->
-
-    <div>
-      <label for="content" class="block text-sm font-semibold text-slate-700 mb-2">내용</label>
-      <textarea id="content"  th:text="${diary.content}" rows="10"
-                readonly
-                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition duration-200 resize-none"></textarea>
-    </div>
-
-    <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
-      <button type="button" onclick="history.back()" th:onclick="|location.href='@{/diaries}'|"
-              class="px-6 py-2.5 text-sm font-semibold text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition duration-200">
-        목록
-      </button>
-      <button type="button" th:onclick="|location.href='@{/diaries/{diaryId}/edit(diaryId=${diary.id})}'|"
-              class="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 shadow-sm transition duration-200">
-        수정
-      </button>
-    </div>
-</div>
+      <div class="space-x-2">
+        <!-- 본인 글일 경우만 노출하도록 처리 가능 SpringSecurity -->
+        <a th:href="@{/diaries/{id}/edit(id=${diary.id})}" class="px-5 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">수정</a>
+        <form th:action="@{/diaries/delete/{id}(id=${diary.id})}" method="post" class="inline">
+          <button type="submit" class="px-5 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+        </form>
+      </div>
+    </footer>
+  </article>
+</main>
 
 </body>
 </html>

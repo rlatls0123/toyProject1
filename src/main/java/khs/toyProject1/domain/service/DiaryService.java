@@ -55,4 +55,9 @@ public class DiaryService {
         repository.update(id,form);
     }
 
+
+    public void delete(Long id) {
+//        Diary diary = repository.findById(id);
+        repository.delete(id);
+    }
 }

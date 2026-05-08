@@ -1,20 +1,41 @@
-<div sec:authorize="isAuthenticated()" class="space-y-4" xmlns:th="http://www.w3.org/1999/xhtml"
-     xmlns:sec="http://www.w3.org/1999/xhtml">
-  <h1 class="text-3xl font-bold mb-2 text-yellow-300">
-    반갑습니다, <span th:text="${member.name}">사용자</span>님!
-  </h1>
-  <p class="text-indigo-100 mb-6 text-sm">성공적으로 로그인되었습니다. 아래 메뉴를 이용해 보세요.</p>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Board</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex items-center justify-center h-screen">
 
-  <form th:action="@{/diaries}">
-    <button type="submit" class="w-full py-3 bg-transparent border border-white/40 text-white font-medium rounded-xl hover:bg-white/10 transition-all text-sm">
+<div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md text-center">
+  <!-- 로고 또는 제목 -->
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">My Board</h1>
+  <p class="text-gray-500 mb-8" th:text="|환영합니다 ${member.name}! 커뮤니티에 참여해보세요.|">환영합니다! 커뮤니티에 참여해보세요.</p>
+
+  <!-- 버튼 그룹 -->
+  <div class="space-y-4">
+    <a th:href="@{/diaries}"
+       class="block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200">
       메인 이동
-    </button>
-  </form>
+    </a>
 
-
-  <form th:action="@{/logout}" method="post">
-    <button type="submit" class="w-full py-3 bg-transparent border border-white/40 text-white font-medium rounded-xl hover:bg-white/10 transition-all text-sm">
+<!--    <a th:href="@{/logout}"-->
+<!--       class="block w-full py-3 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition duration-200">-->
+<!--      로그아웃-->
+<!--    </a>-->
+    <form th:action="@{/logout}" method="post">
+    <button type="submit" class="block w-full py-3 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition duration-200">
       로그아웃 하기
     </button>
-  </form>
+  </div>
+
+  <!-- 하단 링크 (선택사항) -->
+  <div class="mt-6 text-sm text-gray-400">
+    <a th:href="@{/board/list}" class="hover:underline">asdf</a>
+  </div>
 </div>
+
+</body>
+</html>
